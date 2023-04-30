@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>SimpleAPI for SCORM 1.2</title>
+    <link href='http://fonts.googleapis.com/css?family=Leckerli+One' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="scorm.css">
+    <script src="scorm.js"></script>
+
+
+</head>
+
+<body>
+<div id="container">
+    <div class="align-right version">v
+        <script>document.write(_VERSION);</script>
+    </div>
+    <div id="header">
+        <h1>SimpleAPI</h1>
+        <div id="desc">A simple SCO run-time test environment in one file (SCORM1.2 only)</div>
+    </div>
+    <div id="links">
+        <b><a href="javascript:void(0);" onclick="Utils.launchSCO(); return false;">Launch SCO</a></b> | <a
+            href="javascript:void(0);" onclick="Utils.clearCookieData(); return false;">Clear Storage</a> | <a
+            href="javascript:void(0);" onclick="$('debug').innerHTML=''; return false;">Clear Event Log</a> | <a
+            href="javascript:void(0);" onclick="document.location=document.location.href;return false;">Refresh
+        Page</a>
+    </div>
+
+    <fieldset>
+        <legend>scorm player</legend>
+        <iframe height="400" width="400" id="iframe_play_id"></iframe>
+    </fieldset>
+
+    <fieldset>
+        <legend>Event Log <b>( <a href="javascript:void(0);"
+                                  onclick="Utils.toggleDisplay('debug'); return false;">Toggle</a> | <a
+                href="javascript:void(0);"
+                onclick="Utils.dumpAPI(); return false;">Dump Current API Object</a> )</b></legend>
+        <div id="debug"></div>
+    </fieldset>
+    <fieldset>
+        <legend>Options <b>( <a href="javascript:void(0);"
+                                onclick="Utils.toggleDisplay('optionSet'); return false;">Toggle</a> )</b></legend>
+        <div id="optionSet">
+            <div class="tblRowInstructions">Enter the name of the storage to use for this session (or to clear using
+                the option above):
+            </div>
+            <div class="tblRow">
+                <div class="tblRowHeader">Storage Name:</div>
+                <input type="text" id="cookieNameAlt" size="50"> <a
+                    href="javascript:void(0);" onclick="Utils.genNewSessionName(); return false;"
+                    class="actionLink">Generate New Name</a>
+            </div>
+            <div class="tblRowInstructions">Enter the full/relative path/filename for the SCO's launch file. The
+                default is currently &quot;
+                <script>document.write(launchFile);</script>&quot;. Populated automatically if IMS manifest is
+                present:
+            </div>
+            <div class="tblRow">
+                <div class="tblRowHeader">Launch File:</div>
+                <input type="text" id="launchFileAlt" size="30">
+            </div>
+            <div class="tblRowInstructions">Override the default window options (Default values can be changed in
+                the source):
+            </div>
+            <div class="tblRow">
+                <div class="tblRowHeader">Width:</div>
+                <input type="text" id="winW" size="10">
+            </div>
+            <div class="tblRow">
+                <div class="tblRowHeader">Height:</div>
+                <input type="text" id="winH" size="10">
+            </div>
+            <div class="tblRow">
+                <div class="tblRowHeader">Features:</div>
+                <div class="inlineOption"><label for="wToolbarOption">Toolbar</label> <input type="checkbox"
+                                                                                             id="wToolbarOption"
+                                                                                             onclick="Utils.toggleWindowOption('wToolbar',this);">
+                </div>
+                <div class="inlineOption"><label for="wTitlebarOption">Titlebar</label> <input type="checkbox"
+                                                                                               id="wTitlebarOption"
+                                                                                               onclick="Utils.toggleWindowOption('wTitlebar',this);">
+                </div>
+                <div class="inlineOption"><label for="wLocationOption">Location</label> <input type="checkbox"
+                                                                                               id="wLocationOption"
+                                                                                               onclick="Utils.toggleWindowOption('wLocation',this);">
+                </div>
+                <div class="inlineOption"><label for="wStatusOption">Statusbar</label> <input type="checkbox"
+                                                                                              id="wStatusOption"
+                                                                                              onclick="Utils.toggleWindowOption('wStatus',this);">
+                </div>
+                <div class="inlineOption"><label for="wScrollbarsOption">Scrollbars</label> <input type="checkbox"
+                                                                                                   id="wScrollbarsOption"
+                                                                                                   onclick="Utils.toggleWindowOption('wScrollbars',this);">
+                </div>
+                <div class="inlineOption"><label for="wMenubarOption">Menubar</label> <input type="checkbox"
+                                                                                             id="wMenubarOption"
+                                                                                             onclick="Utils.toggleWindowOption('wMenubar',this);">
+                </div>
+                <div class="inlineOption"><label for="wResizableOption">Resizable</label> <input type="checkbox"
+                                                                                                 id="wResizableOption"
+                                                                                                 onclick="Utils.toggleWindowOption('wResizable',this);">
+                </div>
+
+                <div class="optionGroup">
+                    <a href="#" onclick="Utils.enableAllWindowOptions();return false;">Select All</a> | <a href="#"
+                                                                                                           onclick="Utils.disableAllWindowOptions();return false;">Deselect
+                    All</a>
+                </div>
+            </div>
+
+            <div class="tblRowInstructions">SimpleAPI behavioral settings:</div>
+            <div class="tblRow"><input type="checkbox" id="closeOnFinishOption"
+                                       onclick="Utils.toggleCloseOnFinishOption(this.checked);"> <label
+                    for="closeOnFinishOption">Close
+                SCO on LMSFinish</label></div>
+            <div class="tblRow"><input type="checkbox" id="toggleEmbeddedOption"
+                                       onclick="Utils.toggleEmbeddedParam(this.checked);"> <label
+                    for="toggleEmbeddedOption">Launch
+                with custom search string appended to launch file: </label> <input type="text" id="searchString"
+                                                                                   size="50"></div>
+            <div class="tblRow"><input type="checkbox" id="toggleCustomKeyValueOption"
+                                       onclick="Utils.toggleCustomKeyValueOption(this.checked);"> <label
+                    for="toggleCustomKeyValueOption">Launch with custom key/value pair injected into API object:
+            </label><input type="text" id="customApiKey" size="30"> = <input type="text" id="customApiValue"
+                                                                             size="30"></div>
+            &nbsp;
+        </div>
+    </fieldset>
+
+</div>
+
+<div id="copy" class="align-center">
+    <p>SimpleAPI for SCORM 1.2 (v
+        <script>document.write(_VERSION);</script>
+        )
+    </p>
+    <p>Unless otherwise noted within the source - Portions:</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img
+            alt="Creative Commons License" style="border-width:0"
+            src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png"/></a><br/><span
+            xmlns:dct="http://purl.org/dc/terms/" property="dct:title">SimpleAPI</span> by <a
+            xmlns:cc="http://creativecommons.org/ns#" href="http://sean.friese.me" property="cc:attributionName"
+            rel="cc:attributionURL">Sean K. Friese</a> is licensed under a <a rel="license"
+                                                                              href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative
+        Commons Attribution-ShareAlike
+        3.0 Unported License</a>.<br/>Based on a work at <a xmlns:dct="http://purl.org/dc/terms/"
+                                                            href="http://sean.friese.me" rel="dct:source">http://sean.friese.me</a>.
+    </p>
+</div>
+
+</body>
+
+</html>
